@@ -3,33 +3,57 @@ from root import Root
 import threading
 import custTray
 import sys
+from resource_path import resource_path 
 
 class MechVibes:
 
     class MyFrame(wx.Frame):
 
         def __init__(self, volume):
-            super().__init__(parent=None, title='MechVibes', size=(400,200))
-            panel = wx.Panel(self)        
+            super().__init__(parent=None, title='MechVibes', size=(400,300), style=wx.MINIMIZE_BOX|wx.RESIZE_BORDER|wx.SYSTEM_MENU|
+                  wx.CAPTION|wx.CLOSE_BOX|wx.CLIP_CHILDREN)
+            panel = wx.Panel(self)  
+            panel.SetBackgroundColour((255,255,255))
+            self.SetIcon(wx.Icon(resource_path("icon.png")))      
             my_sizer = wx.BoxSizer(wx.VERTICAL)    
-            heading = wx.StaticText(panel,-1,style = wx.ALIGN_CENTER)
-            heading.SetSize(120, 23, 250, -1)
-            font = wx.Font(25, wx.ROMAN, wx.ITALIC, wx.NORMAL) 
+
+            border = wx.StaticBox(panel, -1, '') 
+            borderSizer = wx.StaticBoxSizer(border, wx.VERTICAL) 
+            borderbox = wx.BoxSizer(wx.HORIZONTAL) 
+            borderbox2 = wx.BoxSizer(wx.HORIZONTAL) 
+            topSizer = wx.BoxSizer(wx.HORIZONTAL) 
+            volumeSizer = wx.BoxSizer(wx.HORIZONTAL) 
+            volumeSizerTop = wx.BoxSizer(wx.HORIZONTAL) 
+
+            heading = wx.StaticText(panel ,style = wx.ALIGN_CENTER)
+            font = wx.Font(22, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD) 
             heading.SetFont(font) 
             heading.SetLabel("MechVibes")
 
+            borderbox.Add(heading, 0, wx.BOTTOM|wx.TOP, 20) 
+            borderbox2.Add(borderbox, 0, wx.LEFT|wx.RIGHT, 5) 
+            borderSizer.Add(borderbox2, 0, wx.ALL|wx.CENTER, 10)  
+            topSizer.Add(borderSizer, 0, wx.BOTTOM|wx.TOP, 20)  
+
             self.lbl = wx.StaticText(panel,-1,style = wx.ALIGN_CENTER)
-            self.lbl.SetSize(15, 83, 250, -1)
-            font = wx.Font(18, wx.ROMAN, wx.ITALIC, wx.NORMAL) 
+            self.lbl.SetSize(15, 173, 250, -1)
+            font = wx.Font(14, wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_LIGHT) 
             self.lbl.SetFont(font) 
             self.lbl.SetLabel("Volume "+str(volume.get()))
-
+            self.lbl.SetForegroundColour("#808080")
 
             self.hslider2 = wx.Slider(panel, -1, volume.get(), 0, 100,
                 size=(250, -1),
                 style=wx.SL_HORIZONTAL)       
-            self.hslider2.SetSize(150, 85, 200, -1)
-            self.hslider2.Bind(wx.EVT_COMMAND_SCROLL, self.on_press(volume))      
+            self.hslider2.SetSize(150, 175, 200, -1)
+            self.hslider2.Bind(wx.EVT_COMMAND_SCROLL, self.on_press(volume))
+
+            volumeSizer.Add(self.lbl, 0, wx.RIGHT|wx.LEFT|wx.BOTTOM, 20) 
+            volumeSizer.Add(self.hslider2, 0, wx.RIGHT|wx.LEFT|wx.BOTTOM, 20) 
+            volumeSizerTop.Add(volumeSizer, 0, wx.TOP, 20) 
+
+            my_sizer.Add(topSizer,0, wx.ALL|wx.CENTER, 5) 
+            my_sizer.Add(volumeSizerTop, 0, wx.LEFT|wx.RIGHT, 25)  
             panel.SetSizer(my_sizer)        
             
             self.tbIcon = custTray.CustomTaskBarIcon(self)
@@ -44,7 +68,7 @@ class MechVibes:
                 vol = self.hslider2.GetValue()
                 self.lbl.SetLabel("Volume "+str(volume.get()))
                 volume.changeVolume(int(vol))
-                fo = open("initial_data.txt", "w")
+                fo = open(resource_path("initial_data.txt"), "w")
                 fo.write(str(vol))
                 fo.close()
             return OnClick
@@ -78,7 +102,7 @@ class MechVibes:
         Root(volume)
 
 if __name__ == '__main__':
-    fo = open("initial_data.txt", "r")
+    fo = open(resource_path("initial_data.txt"), "r")
     initail_volume = int(fo.read())
     fo.close()
     mechVibes = MechVibes()

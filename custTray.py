@@ -1,5 +1,6 @@
 import wx.adv
 import wx
+from resource_path import resource_path 
 
 class CustomTaskBarIcon(wx.adv.TaskBarIcon ):
     
@@ -10,7 +11,7 @@ class CustomTaskBarIcon(wx.adv.TaskBarIcon ):
         wx.adv.TaskBarIcon.__init__(self)
         self.frame = frame
         
-        img = wx.Image("icon.png", wx.BITMAP_TYPE_ANY)
+        img = wx.Image(resource_path("icon.png"), wx.BITMAP_TYPE_ANY)
         bmp = wx.Bitmap(img)
         self.icon = wx.Icon()
         self.icon.CopyFromBitmap(bmp)

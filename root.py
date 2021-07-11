@@ -1,6 +1,7 @@
 from pynput import keyboard
 import pygame
 from change import change
+from resource_path import resource_path 
 
 class Root:
 
@@ -13,7 +14,7 @@ class Root:
         # for playing sound 
         try:
             pygame.mixer.init()
-            pygame.mixer.music.load("./sounds/{0}.wav".format(key))
+            pygame.mixer.music.load(resource_path("./sounds/{0}.wav").format(key))
             pygame.mixer.music.set_volume(float(int(self.volume.get())/100))
             pygame.mixer.music.play()       
         except:

@@ -8,7 +8,7 @@
             "name": "MechVibes",
             "type": "python",
             "request": "launch",
-            "program": "gui.pyw",
+            "program": "app.pyw",
             "console": "integratedTerminal"
         }
     ]
