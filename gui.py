@@ -26,9 +26,12 @@ class GUI():
         self.widget.hide()
 
     def setIcon(self):
-        self.pathOfIcon = resource_path("icon.png")
-        self.widget.setWindowIcon(QIcon(self.pathOfIcon))
-    
+        try:
+            self.pathOfIcon = resource_path("icon.png")
+            self.widget.setWindowIcon(QIcon(self.pathOfIcon))
+        except:
+            print("Error when loading icon")
+
     def setTitle(self):
         self.widget.setGeometry(300, 300, 380, 550)
         self.widget.setWindowTitle('MechVibes')

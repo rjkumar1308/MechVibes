@@ -2,7 +2,6 @@ from root import Root
 import threading
 from resource_path import resource_path 
 from gui import GUI
-import sys
 
 class MechVibes:
 
@@ -24,9 +23,12 @@ class MechVibes:
 
 
 if __name__ == '__main__':
-    fo = open(resource_path("initial_data.txt"), "r")
-    initail_volume = int(fo.read())
-    fo.close()
+    try:
+        fo = open(resource_path("initial_data.txt"), "r")
+        initail_volume = int(fo.read())
+        fo.close()
+    except:
+        initail_volume = 100
     mechVibes = MechVibes()
     volume = mechVibes.Volume(initail_volume)
 
